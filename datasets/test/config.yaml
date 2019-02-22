@@ -1,0 +1,8 @@
+conf:
+  name: test
+  url: test.csv
+
+test:
+  question-1:
+    question: some random question here
+    answer: abc
