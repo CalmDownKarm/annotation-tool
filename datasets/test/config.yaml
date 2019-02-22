@@ -1,8 +1,20 @@
 conf:
   name: test
   url: test.csv
+  textcol: name
+  outputcol: annotations
+  primary_key:
+  annotations:
+   - Actor
+   - Actress
+   - Undetermined
 
 test:
   question-1:
     question: some random question here
     answer: abc
+  question-2:
+    question: some other arbritary question here
+    answer:
+      - def
+      - xyz

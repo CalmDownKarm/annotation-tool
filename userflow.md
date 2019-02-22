@@ -12,6 +12,8 @@
 - Server on startup, does the following :
     - read through datasets folder and for every dataset ensure that 3 tables exist. 
     - if they don't exist, create them. 
+    - Inserts dataset into one the tables created. 
+    - TODO: Add support for delta inserts
 
 --
  /home
