@@ -21,6 +21,13 @@ url:
         # Keep max-age small (in case we log out & log in as another user.)
         Cache-Control: private, max-age=1
 
+  text-annotator-get-rows:
+    pattern: /$YAMLURL/data
+    handler: FormHandler
+    kwargs:
+      url: sqlite:///$YAMLPATH/datasets.db
+      queryfunction: annotator.get_dataset(args)
+
   text-annotator-login:
     # Default login_url is /login/. If you change this, change auth.login_url
     # https://learn.gramener.com/guide/auth/#login-urls
