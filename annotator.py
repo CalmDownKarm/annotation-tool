@@ -4,27 +4,7 @@ import glob
 import gramex.data
 import gramex.cache
 import pandas as pd
-
-C_ = {
-    'T_NAME': '_data_rows',
-    'CONFIG': 'config.yaml',
-    'UT_NAME': '_annotators',
-    'A_NAME': '_annotations',
-    'UT_CONFIG': {'user': pd.np.dtype('object'),
-                  'github': pd.np.dtype('object'),
-                  'test': pd.np.dtype('int64')},
-    'A_CONFIG': {'user': pd.np.dtype('object'),
-                 'annotation': pd.np.dtype('object'),
-                 'timestamp': pd.np.dtype('<M8[ns]'),
-                 'rowid': pd.np.dtype('int64')
-                 }
-}
-
-
-def get_dataset(args):
-    return 'SELECT * FROM :name'
-    # TODO: Join against annotations table to ensure that the user doesn't
-    # get the same rows multiple times.
+from gramex import variables as C_
 
 
 def create_tables():
@@ -80,4 +60,3 @@ def create_table_query(tablename, engine, columns, primary_key=None):
         cols += ['prikey INTEGER PRIMARY KEY AUTOINCREMENT']
     query = f'CREATE TABLE IF NOT EXISTS {tablename}({", ".join(cols)});'
     engine.execute(query)
-
