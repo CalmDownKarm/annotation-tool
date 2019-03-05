@@ -48,15 +48,17 @@ def create_table_query(tablename, engine, columns, primary_key=None):
     @param primary_key: name of primary key column
     '''
     pandas_to_SQLITE = {
-        pd.np.dtype('int64'): 'BIGINT',
-        pd.np.dtype('float64'): 'REAL',
-        pd.np.dtype('object'): 'TEXT',
-        pd.np.dtype('<M8[ns]'): 'DATETIME'
+        "pd.np.dtype('int64')": 'BIGINT',
+        "pd.np.dtype('float64')": 'REAL',
+        "pd.np.dtype('object')": 'TEXT',
+        "pd.np.dtype('<M8[ns]')": 'DATETIME'
     }
     slug = re.compile('[^A-Za-z0-9s-]')
-    cols = [(f'{slug.sub("", key)} {pandas_to_SQLITE[val]}' + (' PRIMARY KEY' if key == primary_key else ''))
-                for key, val in columns.items()]
-    if not primary_key:
-        cols += ['prikey INTEGER PRIMARY KEY AUTOINCREMENT']
-    query = f'CREATE TABLE IF NOT EXISTS {tablename}({", ".join(cols)});'
+    [print(key, val) for key, val in columns.items()]
+    # cols = [(f'{slug.sub("", key)} {pandas_to_SQLITE[val]}' +
+    #          (' PRIMARY KEY' if key == primary_key else ''))
+    #         for key, val in columns.items()]
+    # if not primary_key:
+    #     cols += ['prikey INTEGER PRIMARY KEY AUTOINCREMENT']
+    # query = f'CREATE TABLE IF NOT EXISTS {tablename}({", ".join(cols)});'
     engine.execute(query)
