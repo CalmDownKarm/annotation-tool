@@ -1,4 +1,5 @@
-{% import gramex.variables as v%}
+{% from gramex.config import variables as v %}
+{% import gramex.data %}
 <!doctype html>
 <html lang="en">
 
@@ -14,22 +15,71 @@
   {% set base = '.' %}
   {% include template-navbar.html %}
   <!-- TODO: Filter bars -->
-  {% set dataset = handler.argparse(name={}) %}
-  {% if not dataset %}
+  {% set args = handler.argparse(name={'default': None}) %}
+  {% set datasets = gramex.data.filter(url=v['datasets_url'], query='select * from datasets') %}
+  {% if not args.name %}
   {# RENDER ALL DATASETS #}
-    {% datasets = gramex.cache.query('select * from datasets', engine, state=['datasets']) %}
   <div class="container">
     <ul class="urlfilter">
       {% for name in datasets['name'].values %}
-      <li><a href="?name={{name}}" target="pushState" data-mode="toggle">{{ name }}</a></li>
+      <li><a href="?name={{name}}">{{ name }}</a></li>
+      {% end %}
     </ul>
   </div>
+  {% else %}
+  {% set dataset_info = datasets[datasets['name'] == args.name].to_dict(orient='list') %}
+  <!-- {{ dataset_info }} -->
+  {% set config = gramex.cache.open(dataset_info['config'][0], "config") %}
+  {% import json %}
+  
+  <div class="container-fluid d-flex flex-row">
+    <div class="container col-md-2 sidebar d-flex flex-column">
+
+      <div class="row">Progress Bar here</div>
+    </div>
+    <div class="container col-xs-12 col-md-10 mainbox d-flex flex-column">
+      <div class="card-deck">
+        <div class="card d-flex flex-row">
+          <!-- PUT LABELS HERE -->
+          <script type="text/html" class="labels">
+              <% _.each(data, function(o){ %>
+                <button class="button button-dark rounded"><%= o %></button>
+              <% }) %>
+              </script>
+        </div>
+      </div>
+      <div class="card-deck">
+        <div class="card">
+          <div class="card-title">
+            Card title here
+            <!-- PUT A PROGRESS BAR? 1/n ? tab buttons -->
+          </div>
+          <div class="card-body">
+            Sample text here
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% end %}
   <script src="ui/jquery/dist/jquery.min.js"></script>
   <script src="ui/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="ui/lodash/lodash.min.js"></script>
   <script src="ui/g1/dist/g1.min.js"></script>
+  <script src="js/common.js"></script>
+  {% if config %}
+  {{ json.dumps(config.conf) }} This line doesn't work for some reason. 
+  <script>
+      // console.log("{{ json.dumps(config.conf) }}")
+      // var dataset_config = {{ json.dumps(config.conf) }}
+      // debugger
+      // if(datasetconfig)
+      //   $('script.labels').template({ data: datasetconfig.labels })
+    </script>
+  {% end %}
   <!-- Commonly used libraries:
   <script src="ui/d3/build/d3.min.js"></script>
-  <script src="ui/lodash/lodash.min.js"></script>
   <script src="ui/morphdom/dist/morphdom-umd.min.js"></script>
   <script src="ui/moment/min/moment-with-locales.min.js"></script>
   <script src="ui/daterangepicker/daterangepicker.js"></script>
@@ -37,7 +87,5 @@
   <script src="ui/topojson/dist/topojson.min.js"></script>
   -->
 </body>
-<script>
-  $('body').urlfilter()
-</script>
+
 </html>

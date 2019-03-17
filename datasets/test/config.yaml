@@ -4,7 +4,7 @@ conf:
   textcol: name
   outputcol: annotations
   primary_key:
-  annotations:
+  labels:
    - Actor
    - Actress
    - Undetermined

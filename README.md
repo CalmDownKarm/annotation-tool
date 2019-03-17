@@ -11,7 +11,7 @@
 
 Needs python 3
 Needs a datasets.db sqlitedb in the root directory with the following structure 
-`CREATE TABLE datasets(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, url TEXT, query TEXT, engine TEXT);`
+`CREATE TABLE datasets(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, url TEXT, query TEXT, engine TEXT, config TEXT);`
  
 
 
